@@ -4,10 +4,9 @@ phases:
   install:
     commands:
       - echo Installing kubectl
-      - curl -LO "https://dl.k8s.io/release/v1.27.3/bin/linux/amd64/kubectl"
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.27.3/2023-09-14/bin/linux/amd64/kubectl
       - chmod +x kubectl
       - mv kubectl /usr/local/bin/
-      - kubectl version --client   # 👈 DEBUG
 
   pre_build:
     commands:
@@ -16,9 +15,6 @@ phases:
 
   build:
     commands:
-      - echo Current directory
-      - pwd
-      - ls -lrt   # 👈 VERY IMPORTANT DEBUG
       - echo Deploying to EKS
       - kubectl apply -f deployment.yaml
       - kubectl apply -f service.yaml
