@@ -4,17 +4,21 @@ phases:
   install:
     commands:
       - echo Installing kubectl
-      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.27.3/2023-09-14/bin/linux/amd64/kubectl
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/latest/bin/linux/amd64/kubectl
       - chmod +x kubectl
       - mv kubectl /usr/local/bin/
 
   pre_build:
     commands:
       - echo Updating kubeconfig
+      - aws --version
       - aws eks update-kubeconfig --region us-west-2 --name devcluster
+      - kubectl get nodes   # verify cluster connection
 
   build:
     commands:
       - echo Deploying to EKS
       - kubectl apply -f deployment.yaml
       - kubectl apply -f service.yaml
+      - kubectl get pods
+      - kubectl get svc
